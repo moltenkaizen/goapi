@@ -2,7 +2,7 @@
 
 // BASE SETUP
 // =============================================================================
-let Album = require('./app/models/album');
+
 
 // call the packages we need
 const express    = require('express');        // call express

@@ -7,27 +7,27 @@ let Schema = mongoose.Schema;
 let AlbumSchema = new Schema({
   artist: {
     type: String,
-    required: false
+    required: true
   },
   title: {
     type: String,
-    required: false
+    required: true
   },
   year: {
     type: Number,
-    required: false
+    required: true
   },
   country: {
     type: String,
-    required: false
+    required: true
   },
   catalogNumber: {
     type: String,
-    required: false
+    required: true
   },
   discogsID: {
     type: String,
-    required: false,
+    required: true,
     unique: false
   },
   spotifyID: {

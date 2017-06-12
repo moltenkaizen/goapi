@@ -1,4 +1,5 @@
 const express    = require('express');        // call express
+let Album = require('../app/models/album');
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -7,12 +8,12 @@ const router = express.Router();              // get an instance of the express 
 
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
+router.get('/', (req, res) => {
   res.json({ message: 'hooray! welcome to our api!' });
 });
 
 
-router.get('/discogs/:album_id', function(req, res) {
+router.get('/discogs/:album_id', (req, res) => {
   axios.get(`https://api.discogs.com/releases/${req.params.album_id}`, {
     headers: {
       'User-Agent': 'MediaCat/0.1 +http://mediacat.rocks',
@@ -32,7 +33,7 @@ router.get('/discogs/:album_id', function(req, res) {
     });
 });
 
-router.get('/spotify/:album_id', function(req, res) {
+router.get('/spotify/:album_id', (req, res) => {
   axios.get(`https://api.spotify.com/v1/search${req.params.album_id}`, {
     headers: {
       'User-Agent': 'MediaCat/0.1 +http://mediacat.rocks',
@@ -53,9 +54,8 @@ router.get('/spotify/:album_id', function(req, res) {
 // on routes that end in /albums
 // ----------------------------------------------------
 router.route('/albums')
-
 // create a album (accessed at POST http://localhost:8080/api/albums)
-  .post(function(req, res) {
+  .post((req, res) => {
 
     let album = new Album();      // create a new instance of the Album model
     album.artist = req.body.artist;  // set the albums artist (comes from the request)
@@ -66,20 +66,23 @@ router.route('/albums')
     album.discogsID = req.body.discogsID;
     // save the album and check for errors
     album.save(function(err) {
-      if (err)
+      if (err) {
         console.log(err);
-      res.send(err);
-      res.json({ message: 'Album created!' });
+        res.send(err);
+      } else {
+        res.json({ message: 'Album created!' });
+      }
     });
 
   })
   // get all the albums (accessed at GET http://localhost:8080/api/albums)
-  .get(function(req, res) {
+  .get((req, res) => {
     Album.find(function(err, albums) {
-      if (err)
+      if (err) {
         res.send(err);
-
-      res.json(albums);
+      } else {
+        res.json(albums);
+      }
     });
   });
 // on routes that end in /albums/:album_id
@@ -87,21 +90,23 @@ router.route('/albums')
 router.route('/albums/:album_id')
 
 // get the album with that id (accessed at GET http://localhost:8080/api/albums/:album_id)
-  .get(function(req, res) {
-    Album.findById(req.params.album_id, function(err, album) {
-      if (err)
+  .get((req, res) => {
+    Album.findById(req.params.album_id, (err, album) => {
+      if (err) {
         res.send(err);
-      res.json(album);
+      } else {
+        res.json(album);
+      }
     });
   })
   // update the album with this id (accessed at PUT http://localhost:8080/api/albums/:album_id)
   .put(function(req, res) {
 
     // use our album model to find the album we want
-    Album.findById(req.params.album_id, function(err, album) {
-
-      if (err)
+    Album.findById(req.params.album_id, (err, album) => {
+      if (err) {
         res.send(err);
+      }
 
       album.artist = req.body.artist;  // set the albums artist (comes from the request)
       album.title = req.body.title;
@@ -109,23 +114,25 @@ router.route('/albums/:album_id')
 
       // save the album
       album.save(function (err) {
-        if (err)
+        if (err) {
           res.send(err);
-
-        res.json({message: 'Album updated!'});
+        } else {
+          res.json({message: 'Album updated!'});
+        }
       });
     })
 
   })
   // delete the album with this id (accessed at DELETE http://localhost:8080/api/albums/:album_id)
-  .delete(function(req, res) {
+  .delete((req, res) => {
     Album.remove({
       _id: req.params.album_id
     }, function(err, album) {
-      if (err)
+      if (err){
         res.send(err);
-
-      res.json({ message: `Successfully deleted: ${album}` });
+      } else {
+        res.json({ message: `Successfully deleted: ${album}` });
+      }
     });
   });
 
