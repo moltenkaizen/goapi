@@ -65,3 +65,4 @@ typings/
 # MongoDB
 mongodb/
 config.js
+media/images/*

@@ -9,17 +9,7 @@ const express    = require('express');        // call express
 const morgan = require('morgan');
 const app        = express();                 // define our app using express
 const bodyParser = require('body-parser');
-const axios = require('axios');
 const router = require('./router/index');
-// Import Config
-const config = require('./config');
-
-// 3rd party API Keys
-const discogsKey = config.discogsKey;
-const discogsSecret = config.discogsSecret;
-
-const spotifyClientID = config.spotifyClientID;
-const spotifySecret = config.spotifySecret;
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST

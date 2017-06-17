@@ -1,5 +1,17 @@
 const express    = require('express');        // call express
 let Album = require('../app/models/album');
+const axios = require('axios');
+// Import Config
+const config = require('../config');
+const request = require('request');
+const fs = require('fs');
+
+// 3rd party API Keys
+const discogsKey = config.discogsKey;
+const discogsSecret = config.discogsSecret;
+
+const spotifyClientID = config.spotifyClientID;
+const spotifySecret = config.spotifySecret;
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -20,7 +32,22 @@ router.get('/discogs/:album_id', (req, res) => {
       'Authorization': `Discogs key=${discogsKey}, secret=${discogsSecret}`}
   })
     .then(function (response) {
-      // console.log(response.data);
+      // Download album cover from discogs and save it with the id
+      const file = fs.createWriteStream(`media/images/${response.data.id}.jpg`);
+      const imageRequest = {
+        url: response.data.images[0].resource_url,
+        method: 'GET',
+        headers: {
+          'User-Agent': 'MediaCat/0.1 +http://mediacat.rocks',
+          'Authorization': `Discogs key=${discogsKey}, secret=${discogsSecret}`
+        }
+      };
+      request(imageRequest)
+        .pipe(file)
+        .on('error', (error) => {
+          console.log('ahh bad things', error);
+        });
+
       // https://enable-cors.org/server_expressjs.html
       // https://stackoverflow.com/questions/11181546/how-to-enable-cross-origin-resource-sharing-cors-in-the-express-js-framework-o
       res.header("Access-Control-Allow-Origin", "*");
