@@ -65,4 +65,5 @@ typings/
 # MongoDB
 mongodb/
 config.js
-media/images/*
+.DS_Store
+media/

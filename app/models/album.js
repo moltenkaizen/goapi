@@ -1,10 +1,12 @@
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
+
+// mongoose.Promise = global.Promise;
 
 mongoose.connect('mongodb://localhost/albums');
 
-let Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-let AlbumSchema = new Schema({
+const AlbumSchema = new Schema({
   artist: {
     type: String,
     required: true
@@ -15,13 +17,17 @@ let AlbumSchema = new Schema({
   },
   year: {
     type: Number,
-    required: true
+    required: false
   },
   country: {
     type: String,
     required: true
   },
   catalogNumber: {
+    type: String,
+    required: true
+  },
+  format: {
     type: String,
     required: true
   },
@@ -32,8 +38,15 @@ let AlbumSchema = new Schema({
   },
   spotifyID: {
     type: String
+  },
+  thumb: {
+    type: String
+  },
+  cover: {
+    type: String
   }
 
 });
+
 
 module.exports = mongoose.model('Album', AlbumSchema);
