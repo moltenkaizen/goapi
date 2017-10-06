@@ -1,11 +1,9 @@
-const mongoose = require('mongoose');
-
+const mongoose = require('mongoose')
 // mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/albums')
+mongoose.Promise = global.Promise
 
-mongoose.connect('mongodb://localhost/albums');
-mongoose.Promise = global.Promise;
-
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const AlbumSchema = new Schema({
   artist: {
@@ -47,7 +45,6 @@ const AlbumSchema = new Schema({
     type: String
   }
 
-});
+})
 
-
-module.exports = mongoose.model('Album', AlbumSchema);
+module.exports = mongoose.model('Album', AlbumSchema)
